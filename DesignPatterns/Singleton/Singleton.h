@@ -1,3 +1,11 @@
+/**
+ * @file Singleton.h
+ * @brief 单例模式的实现
+ * @details 其中包括懒汉式、饿汉式、双检锁机制以及 IoDH 模式
+ * @author Leaos
+ * @date 2022-10-20
+ */
+
 #ifndef _SINGLETON_H_
 #define _SINGLETON_H_
 
