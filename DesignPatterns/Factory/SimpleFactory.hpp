@@ -1,5 +1,5 @@
 /**
- * @file SimpleFactory.h
+ * @file SimpleFactory.hpp
  * @brief 简单工厂模式
  * @author Leaos
  * @date 2022-10-21
