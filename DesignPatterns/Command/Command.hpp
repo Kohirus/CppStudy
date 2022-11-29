@@ -1,3 +1,10 @@
+/**
+ * @file Command.hpp
+ * @brief 命令模式
+ * @author Leaos
+ * @date 2022-11-28
+ */
+
 #ifndef _COMMAND_H_
 #define _COMMAND_H_
 
