@@ -8,6 +8,7 @@
 #include <condition_variable>
 #include <functional>
 #include <unordered_map>
+#include <thread>
 
 class Any {
 public:
@@ -132,7 +133,7 @@ public:
     ThreadPool& operator=(const ThreadPool&) = delete;
 
     // 开启线程池
-    void start(int initThreadSize = 4);
+    void start(int initThreadSize = std::thread::hardware_concurrency());
     // 设置线程池的工作模式
     void setMode(PoolMode mode);
     // 设置任务队列的上限阈值
