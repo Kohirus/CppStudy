@@ -1,8 +1,10 @@
-#include <iostream>
 #include <vector>
 using namespace std;
 
-// 非递归 左闭有闭
+#ifndef _BINEARY_SEARCH_H_
+#define _BINEARY_SEARCH_H_
+
+// 二分搜索：非递归 左闭有闭
 int binearySearch1(const vector<int>& nums, int target) {
     int left = 0, right = nums.size() - 1;
     while (left <= right) {
@@ -18,7 +20,7 @@ int binearySearch1(const vector<int>& nums, int target) {
     return -1;
 }
 
-// 非递归 左闭右开
+// 二分搜索：非递归 左闭右开
 int binearySearch2(const vector<int>& nums, int target) {
     int left = 0, right = nums.size();
     while (left < right) {
@@ -34,7 +36,7 @@ int binearySearch2(const vector<int>& nums, int target) {
     return -1;
 }
 
-// 递归版本
+// 二分搜索：递归版本
 int binearySearch3(const vector<int>& nums, int start, int end, int target) {
     if (start > end) {
         return -1;
@@ -49,10 +51,4 @@ int binearySearch3(const vector<int>& nums, int start, int end, int target) {
     }
 }
 
-int main() {
-    vector<int> nums   = { 13, 21, 33, 37, 40, 48, 50, 51, 69, 73, 82 };
-    int         target = 50;
-    cout << binearySearch1(nums, target) << endl;
-    cout << binearySearch2(nums, target) << endl;
-    cout << binearySearch3(nums, 0, nums.size() - 1, target) << endl;
-}
+#endif // !_BINEARY_SEARCH_H_
