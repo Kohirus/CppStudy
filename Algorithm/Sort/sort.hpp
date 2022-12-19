@@ -32,4 +32,34 @@ void selectionSort(vector<int>& nums) {
     }
 }
 
+// 插入排序
+void insertionSort(vector<int>& nums) {
+    for (int i = 1; i < nums.size(); i++) {
+        int val = nums[i], j = i - 1;
+        for (; j >= 0; j--) {
+            if (nums[j] <= val) {
+                break;
+            }
+            nums[j + 1] = nums[j];
+        }
+        nums[j + 1] = val;
+    }
+}
+
+// 希尔排序
+void shellSort(vector<int>& nums) {
+    for (int gap = nums.size() / 2; gap > 0; gap /= 2) {
+        for (int i = gap; i < nums.size(); i++) {
+            int val = nums[i], j = i - gap;
+            for (; j >= 0; j -= gap) {
+                if (nums[j] <= val) {
+                    break;
+                }
+                nums[j + gap] = nums[j];
+            }
+            nums[j + gap] = val;
+        }
+    }
+}
+
 #endif // !_BUFFER_SORT_H_

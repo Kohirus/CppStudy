@@ -6,6 +6,14 @@
 #include "sort.hpp"
 using namespace std;
 
+#define SMALL_TEST // 开启小数据测试
+#define LARGE_TEST // 开启大数据测试
+
+#define BUBBLE_SORT    // 开启冒泡排序
+#define SELECTION_SORT // 开启选择排序
+#define INSERTION_SORT // 开启插入排序
+#define SHELL_SORT     // 开启希尔排序
+
 const int VEC_LEN = 100000; // 随机数组的长度
 const int VAL_MIN = 0;      // 数组元素的最小值
 const int VAL_MAX = 10000;  // 数组元素的最大值
@@ -27,39 +35,114 @@ vector<int> createRandomVector() {
 
 int main() {
     srand((unsigned)time(NULL));
-    vector<int> smallNums = { 18, 54, 26, 2, 67, 99, 72, 46, 81, 11 };
-    vector<int> largeNums = createRandomVector();
+    vector<int>                   smallNums = { 18, 54, 26, 2, 67, 99, 72, 46, 81, 11 };
+    vector<int>                   largeNums = createRandomVector();
+    auto                          start = std::chrono::steady_clock::now(), end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> elapsed;
 
+#ifdef BUBBLE_SORT
     // ==========================================================
     // 冒泡排序
+    cout << "=======================================" << endl;
     cout << ">>> Bubble Sort: " << endl;
+
+#ifdef SMALL_TEST
     cout << "Small Vector: ";
-    vector<int> bsSmallNums = smallNums, bsLargeNums = largeNums;
+    vector<int> bsSmallNums = smallNums;
     bubbleSort(bsSmallNums);
     printVector(bsSmallNums);
-    auto start = std::chrono::steady_clock::now();
-    bubbleSort(bsLargeNums);
-    auto end = std::chrono::steady_clock::now();
-    cout << "Large Vector: ";
-    std::chrono::duration<double> elapsed = chrono::duration_cast<chrono::duration<double>>(end - start);
-    cout << elapsed.count() << " seconds" << endl;
-    // ==========================================================
+#endif // SMALL_TEST
 
+#ifdef LARGE_TEST
+    vector<int> bsLargeNums = largeNums;
+    start                   = std::chrono::steady_clock::now();
+    bubbleSort(bsLargeNums);
+    end = std::chrono::steady_clock::now();
+    cout << "Large Vector: ";
+    elapsed = chrono::duration_cast<chrono::duration<double>>(end - start);
+    cout << elapsed.count() << " seconds" << endl;
+#endif // LARGE_TEST
+
+    // ==========================================================
+#endif // BUBBLE_SORT
+
+#ifdef SELECTION_SORT
     // ==========================================================
     // 快速排序
     cout << "=======================================" << endl;
     cout << ">>> Selection Sort: " << endl;
+
+#ifdef SMALL_TEST
     cout << "Small Vector: ";
-    vector<int> ssSmallNums = smallNums, ssLargeNums = largeNums;
+    vector<int> ssSmallNums = smallNums;
     selectionSort(ssSmallNums);
     printVector(ssSmallNums);
-    start = std::chrono::steady_clock::now();
+#endif // SMALL_TEST
+
+#ifdef LARGE_TEST
+    vector<int> ssLargeNums = largeNums;
+    start                   = std::chrono::steady_clock::now();
     selectionSort(ssLargeNums);
     end = std::chrono::steady_clock::now();
     cout << "Large Vector: ";
     elapsed = chrono::duration_cast<chrono::duration<double>>(end - start);
     cout << elapsed.count() << " seconds" << endl;
+#endif // LARGE_TEST
+
     // ==========================================================
+#endif // SELECTION_SORT
+
+#ifdef INSERTION_SORT
+    // ==========================================================
+    // 插入排序
+    cout << "=======================================" << endl;
+    cout << ">>> Insertion Sort: " << endl;
+
+#ifdef SMALL_TEST
+    cout << "Small Vector: ";
+    vector<int> isSmallNums = smallNums;
+    insertionSort(isSmallNums);
+    printVector(isSmallNums);
+#endif // SMALL_TEST
+
+#ifdef LARGE_TEST
+    vector<int> isLargeNums = largeNums;
+    start                   = std::chrono::steady_clock::now();
+    insertionSort(isLargeNums);
+    end = std::chrono::steady_clock::now();
+    cout << "Large Vector: ";
+    elapsed = chrono::duration_cast<chrono::duration<double>>(end - start);
+    cout << elapsed.count() << " seconds" << endl;
+#endif // LARGE_TEST
+
+    // ==========================================================
+#endif // INSERTION_SORT
+
+#ifdef SHELL_SORT
+    // ==========================================================
+    // 希尔排序
+    cout << "=======================================" << endl;
+    cout << ">>> Shell Sort: " << endl;
+
+#ifdef SMALL_TEST
+    cout << "Small Vector: ";
+    vector<int> shsSmallNums = smallNums;
+    shellSort(shsSmallNums);
+    printVector(shsSmallNums);
+#endif // SMALL_TEST
+
+#ifdef LARGE_TEST
+    vector<int> shsLargeNums = largeNums;
+    start                    = std::chrono::steady_clock::now();
+    shellSort(shsLargeNums);
+    end = std::chrono::steady_clock::now();
+    cout << "Large Vector: ";
+    elapsed = chrono::duration_cast<chrono::duration<double>>(end - start);
+    cout << elapsed.count() << " seconds" << endl;
+#endif // LARGE_TEST
+
+    // ==========================================================
+#endif // SHELL_SORT
 
     return 0;
 }
