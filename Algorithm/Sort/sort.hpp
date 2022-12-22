@@ -171,4 +171,32 @@ void heapSort(vector<int>& nums) {
     }
 }
 
+// 基数排序
+void radixSort(vector<int>& nums) {
+    int maxVal = nums[0];
+    for (int num : nums) maxVal = max(num, maxVal);
+    int len = to_string(maxVal).size();
+
+    vector<vector<int>> vecs;
+    int                 mod = 10, dev = 1;
+
+    for (int i = 0; i < len; i++, mod *= 10, dev *= 10) {
+        vecs.resize(10);
+
+        for (int j = 0; j < nums.size(); j++) {
+            int idx = (nums[j] % mod) / dev;
+            vecs[idx].push_back(nums[j]);
+        }
+
+        int idx = 0;
+        for (auto vec : vecs) {
+            for (auto v : vec) {
+                nums[idx++] = v;
+            }
+        }
+
+        vecs.clear();
+    }
+}
+
 #endif // !_BUFFER_SORT_H_

@@ -16,6 +16,7 @@ using namespace std;
 #define QUICK_SORT     // 开启快速排序
 #define MERGE_SORT     // 开启归并排序
 #define HEAP_SORT      // 开启堆排序
+#define RADIX_SORT     // 开启基数排序
 
 const int VEC_LEN = 100000; // 随机数组的长度
 const int VAL_MIN = 0;      // 数组元素的最小值
@@ -224,6 +225,32 @@ int main() {
 
     // ==========================================================
 #endif // HEAP_SORT
+
+#ifdef RADIX_SORT
+    // ==========================================================
+    // 基数排序
+    cout << "=======================================" << endl;
+    cout << ">>> Radix Sort: " << endl;
+
+#ifdef SMALL_TEST
+    cout << "Small Vector: ";
+    vector<int> rsSmallNums = smallNums;
+    radixSort(rsSmallNums);
+    printVector(rsSmallNums);
+#endif // SMALL_TEST
+
+#ifdef LARGE_TEST
+    vector<int> rsLargeNums = largeNums;
+    start                   = std::chrono::steady_clock::now();
+    radixSort(rsLargeNums);
+    end = std::chrono::steady_clock::now();
+    cout << "Large Vector: ";
+    elapsed = chrono::duration_cast<chrono::duration<double>>(end - start);
+    cout << elapsed.count() << " seconds" << endl;
+#endif // LARGE_TEST
+
+    // ==========================================================
+#endif // RADIX_SORT
 
     return 0;
 }
