@@ -5,3 +5,5 @@ DataStructure/Queue/main.exe
 Algorithm/Search/main.exe
 Algorithm/Sort/main.exe
 DataStructure/PriorityQueue/main.exe
+DataStructure/HashTable/LinearProbing/main.exe
+DataStructure/HashTable/LinkedAddress/main.exe
