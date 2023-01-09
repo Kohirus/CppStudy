@@ -7,3 +7,7 @@ Algorithm/Sort/main.exe
 DataStructure/PriorityQueue/main.exe
 DataStructure/HashTable/LinearProbing/main.exe
 DataStructure/HashTable/LinkedAddress/main.exe
+Algorithm/BigDataDuplicateChecking/Bitmap/bitmap.exe
+Algorithm/BigDataDuplicateChecking/BloomFilter/bloomfilter.exe
+Algorithm/BigDataTopK/Partition/partition.exe
+Algorithm/BigDataTopK/Heap/heap.exe
