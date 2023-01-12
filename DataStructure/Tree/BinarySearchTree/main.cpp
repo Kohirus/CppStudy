@@ -23,6 +23,13 @@ int main() {
     cout << endl;
 
     // 递归前序遍历 中序遍历 后序遍历 层序遍历
+    tree.r_preOrder();
+    tree.r_inOrder();
+    tree.r_postOrder();
+    tree.r_levelOrder();
+    cout << endl;
+
+    // 非递归前序遍历 中序遍历 后序遍历 层序遍历
     tree.preOrder();
     tree.inOrder();
     tree.postOrder();

@@ -11,6 +11,8 @@
 #include <functional>
 #include "printer.hpp"
 #include <string>
+#include <stack>
+#include <queue>
 using namespace std;
 
 template <typename T, typename Comp = less<T>>
@@ -132,32 +134,112 @@ public:
     }
 
     /// @brief 递归前序遍历
-    void preOrder() {
+    void r_preOrder() {
         cout << "[Recursion]Preorder Traversal: ";
-        preOrder(root_);
+        r_preOrder(root_);
+        cout << endl;
+    }
+
+    /// @brief 非递归前序遍历
+    void preOrder() {
+        cout << "[Not Recursion]Preorder Traversal: ";
+        if (root_ == nullptr) return;
+        stack<Node*> st;
+        st.push(root_);
+        while (!st.empty()) {
+            Node* top = st.top();
+            st.pop();
+
+            cout << top->data_ << " ";
+
+            if (top->right_ != nullptr) st.push(top->right_);
+            if (top->left_ != nullptr) st.push(top->left_);
+        }
         cout << endl;
     }
 
     /// @brief 递归中序遍历
-    void inOrder() {
+    void r_inOrder() {
         cout << "[Recursion]Inorder Traversal: ";
-        inOrder(root_);
+        r_inOrder(root_);
+        cout << endl;
+    }
+
+    /// @brief 非递归中序遍历
+    void inOrder() {
+        cout << "[Not Recursion]Inorder Traversal: ";
+        if (root_ == nullptr) return;
+        stack<Node*> st;
+        Node*        cur = root_;
+        while (cur != nullptr) {
+            st.push(cur);
+            cur = cur->left_;
+        }
+
+        while (!st.empty() || cur != nullptr) {
+            if (cur != nullptr) {
+                st.push(cur);
+                cur = cur->left_;
+            } else {
+                Node* top = st.top();
+                st.pop();
+                cout << top->data_ << " ";
+                cur = top->right_;
+            }
+        }
         cout << endl;
     }
 
     /// @brief 递归后序遍历
-    void postOrder() {
+    void r_postOrder() {
         cout << "[Recursion]Postorder Traversal: ";
-        postOrder(root_);
+        r_postOrder(root_);
+        cout << endl;
+    }
+
+    /// @brief 非递归后序遍历
+    void postOrder() {
+        cout << "[Not Recursion]Postorder Traversal: ";
+        if (root_ == nullptr) return;
+        stack<Node*> st, tmp;
+        st.push(root_);
+        while (!st.empty()) {
+            Node* top = st.top();
+            st.pop();
+            tmp.push(top);
+            if (top->left_ != nullptr) st.push(top->left_);
+            if (top->right_ != nullptr) st.push(top->right_);
+        }
+        while (!tmp.empty()) {
+            Node* top = tmp.top();
+            cout << top->data_ << " ";
+            tmp.pop();
+        }
         cout << endl;
     }
 
     /// @brief 递归层序遍历
-    void levelOrder() {
+    void r_levelOrder() {
         cout << "[Recursion]Levelorder Traversal: ";
         int l = level();
         for (int i = 0; i < l; i++) {
-            levelOrder(root_, i);
+            r_levelOrder(root_, i);
+        }
+        cout << endl;
+    }
+
+    /// @brief 非递归层序遍历
+    void levelOrder() {
+        cout << "[Not Recursion]Levelorder Traversal: ";
+        if (root_ == nullptr) return;
+        queue<Node*> qe;
+        qe.push(root_);
+        while (!qe.empty()) {
+            Node* front = qe.front();
+            if (front->left_ != nullptr) qe.push(front->left_);
+            if (front->right_ != nullptr) qe.push(front->right_);
+            qe.pop();
+            cout << front->data_ << " ";
         }
         cout << endl;
     }
@@ -262,42 +344,42 @@ private:
     }
 
     /// @brief 递归前序遍历
-    void preOrder(Node* node) {
+    void r_preOrder(Node* node) {
         if (node == nullptr) return;
 
         cout << node->data_ << " ";
-        preOrder(node->left_);
-        preOrder(node->right_);
+        r_preOrder(node->left_);
+        r_preOrder(node->right_);
     }
 
     /// @brief 递归中序遍历
-    void inOrder(Node* node) {
+    void r_inOrder(Node* node) {
         if (node == nullptr) return;
 
-        inOrder(node->left_);
+        r_inOrder(node->left_);
         cout << node->data_ << " ";
-        inOrder(node->right_);
+        r_inOrder(node->right_);
     }
 
     /// @brief 递归后序遍历
-    void postOrder(Node* node) {
+    void r_postOrder(Node* node) {
         if (node == nullptr) return;
 
-        postOrder(node->left_);
-        postOrder(node->right_);
+        r_postOrder(node->left_);
+        r_postOrder(node->right_);
         cout << node->data_ << " ";
     }
 
     /// @brief 递归层序遍历
-    void levelOrder(Node* node, int l) {
+    void r_levelOrder(Node* node, int l) {
         if (node == nullptr) return;
 
         if (l == 0) {
             cout << node->data_ << " ";
             return;
         }
-        levelOrder(node->left_, l - 1);
-        levelOrder(node->right_, l - 1);
+        r_levelOrder(node->left_, l - 1);
+        r_levelOrder(node->right_, l - 1);
     }
 
     /// @brief 递归求二叉树的层数
