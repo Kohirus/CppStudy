@@ -13,14 +13,36 @@
 #include <string>
 #include <stack>
 #include <queue>
+#include <vector>
 using namespace std;
 
 template <typename T, typename Comp = less<T>>
 class BSTree : public Printer {
 public:
-    BSTree()
-        : root_(nullptr) { }
-    ~BSTree() { }
+    BSTree(Comp comp = Comp())
+        : root_(nullptr)
+        , comp_(comp) { }
+    /// @brief 根据前序遍历和中序遍历构建二叉树
+    BSTree(const vector<T>& preOrderVec, const vector<T>& inOrderVec) {
+        root_ = build(preOrderVec, inOrderVec, 0, preOrderVec.size() - 1,
+            0, inOrderVec.size() - 1);
+    }
+    ~BSTree() {
+        // 层序遍历进行析构
+        if (root_ != nullptr) {
+            queue<Node*> qe;
+            qe.push(root_);
+            while (!qe.empty()) {
+                Node* front = qe.front();
+                qe.pop();
+
+                if (front->left_ != nullptr) qe.push(front->left_);
+                if (front->right_ != nullptr) qe.push(front->right_);
+                delete front;
+            }
+            root_ = nullptr;
+        }
+    }
 
     /// @brief 非递归插入
     void insert(const T& val) {
@@ -254,6 +276,77 @@ public:
         return size(root_);
     }
 
+    /// @brief 搜索满足区间的元素值
+    void findValues(vector<T>& vec, int i, int j) {
+        findValues(root_, vec, i, j);
+    }
+
+    /// @brief 判断二叉树是否为BST树
+    bool isBSTree() {
+        Node* preNode = nullptr;
+        return isBSTree(root_, preNode);
+    }
+
+    /// @brief 子树问题
+    bool isChildTree(BSTree<T, Comp>& child) {
+        // 在当前二叉树上找到子树的根节点
+        if (child.root_ == nullptr) {
+            return true;
+        }
+
+        Node* cur = root_;
+        while (cur != nullptr) {
+            if (cur->data_ == child.root_->data_) {
+                break;
+            } else if (comp_(cur->data_, child.root_->data_)) {
+                cur = cur->right_;
+            } else {
+                cur = cur->left_;
+            }
+        }
+        if (cur == nullptr) return false;
+        return isChildTree(cur, child.root_);
+    }
+
+    /// @brief 最近的公共祖先
+    T getLCA(T val1, T val2) {
+        Node* node = getLCA(root_, val1, val2);
+        if (node == nullptr) {
+            throw "No LCA!";
+        } else {
+            return node->data_;
+        }
+    }
+
+    /// @brief 镜像翻转
+    void invertTree() {
+        invertTree(root_);
+    }
+
+    /// @brief 镜像对称
+    bool isSymmetricTree() {
+        if (root_ == nullptr) return true;
+        return isSymmetricTree(root_->left_, root_->right_);
+    }
+
+    /// @brief 判断是否为平衡树
+    bool isBalanceTree() {
+        bool res = true;
+        isBalanceTree(root_, 0, res);
+        return res;
+    }
+
+    /// @brief 求中序遍历倒数第k个节点
+    int getVal(int k) {
+        int   i    = 1;
+        Node* node = getVal(root_, k);
+        if (node == nullptr) {
+            throw "Out of range!";
+        } else {
+            return node->data_;
+        }
+    }
+
 protected:
     /// @brief 继承自Printer 实现如下函数以打印二叉树
     void*  getRoot() const { return (void*)root_; }
@@ -397,6 +490,153 @@ private:
         int lcnt = size(node->left_);
         int rcnt = size(node->right_);
         return rcnt + lcnt + 1;
+    }
+
+    /// @brief 递归搜索满足区间的元素值
+    void findValues(Node* node, vector<T>& vec, int i, int j) {
+        if (node != nullptr) {
+            if (node->data_ > i) {
+                // 如果当前节点的值小于等于左边界
+                // 则当前节点的左子树没有必要去搜索
+                findValues(node->left_, vec, i, j);
+            }
+            if (node->data_ >= i && node->data_ <= j) {
+                vec.push_back(node->data_);
+            }
+            if (node->data_ < j) {
+                // 如果当前结点的值大于等于右边界
+                // 则当前节点的右子树没有必要去搜索
+                findValues(node->right_, vec, i, j);
+            }
+        }
+    }
+
+    /// @brief 递归判断二叉树是否为BST树
+    bool isBSTree(Node* node, Node*& preNode) {
+        if (node == nullptr) return true;
+
+        if (!isBSTree(node->left_, preNode)) {
+            return false;
+        }
+        if (preNode != nullptr) {
+            if (comp_(node->data_, preNode->data_)) {
+                return false;
+            }
+        }
+        preNode = node;
+        return isBSTree(node->right_, preNode);
+    }
+
+    /// @brief 递归判断子树问题
+    bool isChildTree(Node* father, Node* child) {
+        if (father == nullptr && child == nullptr) return true;
+        // 子树有 但是父树没有
+        if (father == nullptr) return false;
+        // 子树没有 但是父树有
+        if (child == nullptr) return true;
+
+        if (father->data_ != child->data_) {
+            return false;
+        }
+
+        return isChildTree(father->left_, child->left_)
+            && isChildTree(father->right_, child->right_);
+    }
+
+    /// @brief 递归搜索公共祖先
+    Node* getLCA(Node* node, int val1, int val2) {
+        if (node == nullptr) return nullptr;
+
+        if (comp_(node->data_, val1) && comp_(node->data_, val2)) {
+            return getLCA(node->right_, val1, val2);
+        } else if (comp_(val1, node->data_) && comp_(val2, node->data_)) {
+            return getLCA(node->left_, val1, val2);
+        } else {
+            return node;
+        }
+    }
+
+    /// @brief 递归镜像翻转
+    void invertTree(Node* node) {
+        if (node == nullptr) return;
+
+        Node* tmp    = node->left_;
+        node->left_  = node->right_;
+        node->right_ = tmp;
+
+        invertTree(node->left_);
+        invertTree(node->right_);
+    }
+
+    /// @brief 递归判断镜像对称
+    bool isSymmetricTree(Node* node1, Node* node2) {
+        if (node1 == nullptr && node2 == nullptr) return true;
+        if (node1 == nullptr || node2 == nullptr) return false;
+
+        if (node1->data_ != node2->data_)
+            return false;
+        return isSymmetricTree(node1->left_, node2->right_)
+            && isSymmetricTree(node1->right_, node2->left_);
+    }
+
+    /**
+     * @brief 根据前序遍历和中序遍历递归构建二叉树
+     *
+     * @param preOrderVec 前序序列
+     * @param inOrderVec 中序序列
+     * @param preStart 前序序列的起始索引
+     * @param preEnd 前序序列的结束索引
+     * @param inStart 中序序列的起始索引
+     * @param inEnd 中序序列的结束索引
+     */
+    Node* build(const vector<T>& preOrderVec, const vector<T>& inOrderVec,
+        int preStart, int preEnd, int inStart, int inEnd) {
+        if (preStart > preEnd || inStart > inEnd) return nullptr;
+
+        // 创建当前子树的根节点
+        Node* node = new Node(preOrderVec[preStart]);
+        for (int i = inStart; i <= inEnd; i++) {
+            // 在中序序列中找寻目标元素 即为当前子树的根节点
+            if (preOrderVec[preStart] == inOrderVec[i]) {
+                node->left_  = build(preOrderVec, inOrderVec, preStart + 1,
+                     preStart + (i - inStart), inStart, i - 1);
+                node->right_ = build(preOrderVec, inOrderVec,
+                    preStart + (i - inStart) + 1, preEnd, i + 1, inEnd);
+                return node;
+            }
+        }
+        return node;
+    }
+
+    /// @brief 递归判断是否为平衡树
+    int isBalanceTree(Node* node, int l, bool& flag) {
+        if (node == nullptr) return l;
+
+        int left = isBalanceTree(node->left_, l + 1, flag);
+        if (!flag) return left;
+        int right = isBalanceTree(node->right_, l + 1, flag);
+        if (!flag) return right;
+
+        if (abs(left - right) > 1) {
+            flag = false;
+        }
+        return max(left, right);
+    }
+
+    int i = 1;
+    /// @brief 求中序遍历倒数第k个节点
+    Node* getVal(Node* node, int k) {
+        if (node == nullptr) return nullptr;
+
+        int   tmp   = i + 1;
+        Node* right = getVal(node->right_, k);
+        if (right != nullptr) {
+            return right;
+        }
+        if (i++ == k) {
+            return node;
+        }
+        return getVal(node->left_, k);
     }
 };
 
