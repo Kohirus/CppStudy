@@ -15,5 +15,5 @@ DataStructure/Tree/BinarySearchTree/main.exe
 DataStructure/Tree/BinarySearchTree/bstree.exe
 DataStructure/Tree/BalanceTree/main.exe
 DataStructure/Tree/RedBlackTree/main.exe
-Algorithm/Advanced/Backtrace/SubsetTree/subsettree.exe
-Algorithm/Advanced/Backtrace/SortTree/sorttree.exe
+Algorithm/Backtrace/SubsetTree/subsettree.exe
+Algorithm/Backtrace/SortTree/sorttree.exe

@@ -1,8 +1,8 @@
-#include <vector>
-using namespace std;
-
 #ifndef _BINEARY_SEARCH_H_
 #define _BINEARY_SEARCH_H_
+
+#include <vector>
+using namespace std;
 
 // 二分搜索：非递归 左闭有闭
 int binearySearch1(const vector<int>& nums, int target) {
