@@ -19,6 +19,7 @@
 - [x] 回溯算法(子集树、排列树)
 - [x] 串搜索算法(BF、KMP)
 - [x] 倒排索引
+- [x] 最短路径算法(Dijkstra算法、Floyd算法)
 
 # Data Structure
 
