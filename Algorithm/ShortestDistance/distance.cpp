@@ -95,3 +95,15 @@ int dijkstra_plus(const vector<vector<uint>>& graph, int start, int end) {
 
     return dis[end];
 }
+
+void floyd(vector<vector<uint>>& graph) {
+    // 依次加入每个点
+    for (int k = 0; k < graph.size(); ++k) {
+        // 遍历邻接矩阵
+        for (int i = 0; i < graph.size(); i++) {
+            for (int j = 0; j < graph.size(); j++) {
+                graph[i][j] = min(graph[i][j], graph[i][k] + graph[k][j]);
+            }
+        }
+    }
+}

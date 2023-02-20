@@ -31,5 +31,14 @@ int main() {
         cout << "distance:" << distance << endl;
     }
     cout << "=====================" << endl;
+
+    floyd(graph);
+    for (auto& vec : graph) {
+        for (auto val : vec) {
+            cout << val << " ";
+        }
+        cout << endl;
+    }
+    cout << "=====================" << endl;
     return 0;
 }
